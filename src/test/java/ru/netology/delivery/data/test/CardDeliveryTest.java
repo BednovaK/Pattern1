@@ -4,7 +4,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
-import ru.netology.delivery.data.DataGenerator;
+import data.DataGenerator;
 
 import java.time.Duration;
 
@@ -15,15 +15,9 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class CardDeliveryTest {
 
-    @Test
-    public void validUser(){
-        var validUser = DataGenerator.Registration.generateUser("Ru");
-        System.out.println(validUser);
-    }
-
 
     @Test
-    void shouldSuccessfulPlanAndReplanMeeting(){
+    void shouldSuccessfulPlanAndReplanMeeting() {
 
         Configuration.holdBrowserOpen = true;
         open("http://localhost:9999");
@@ -38,10 +32,10 @@ public class CardDeliveryTest {
         $("[data-test-id='agreement']").click();
         $(byText("Запланировать")).click();
         $(withText("Успешно!")).should(visible, Duration.ofSeconds(15));
-        $(".notification__content").shouldHave(Condition.text("Встреча успешно забронирована на " + planningDate), Duration.ofSeconds(15));
+        $(".notification__content").shouldHave(Condition.text("Встреча успешно запланирована на " + planningDate), Duration.ofSeconds(15));
 
         $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
-        String updateDate = DataGenerator.generateDate(10);
+        String updateDate = DataGenerator.generateDate(9);
         $("[data-test-id='date'] input").setValue(updateDate);
         $(byText("Запланировать")).click();
 
@@ -54,25 +48,4 @@ public class CardDeliveryTest {
                 .shouldHave(Condition.text("Встреча успешно запланирована на " + updateDate), Duration.ofSeconds(15));
     }
 }
-//
-//    @BeforeEach
-//    void setup() {
-//        open("http://localhost:9999");
-//    }
 
-//    @Test
-//    @DisplayName("Should successful plan and replan meeting")
-//    void shouldSuccessfulPlanAndReplanMeeting() {
-//        var validUser = DataGenerator.Registration.generateUser("ru");
-//        var daysToAddForFirstMeeting = 4;
-//        var firstMeetingDate = DataGenerator.generateDate(daysToAddForFirstMeeting);
-//        var daysToAddForSecondMeeting = 7;
-//        var secondMeetingDate = DataGenerator.generateDate(daysToAddForSecondMeeting);
-//        // TODO: добавить логику теста в рамках которого будет выполнено планирование и перепланирование встречи.
-//        // Для заполнения полей формы можно использовать пользователя validUser и строки с датами в переменных
-//        // firstMeetingDate и secondMeetingDate. Можно также вызывать методы generateCity(locale),
-//        // generateName(locale), generatePhone(locale) для генерации и получения в тесте соответственно города,
-//        // имени и номера телефона без создания пользователя в методе generateUser(String locale) в датагенераторе
-//    }
-//}
-//}
